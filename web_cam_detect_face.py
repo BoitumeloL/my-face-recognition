@@ -11,11 +11,7 @@ from time import sleep
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv.CascadeClassifier('haarcascade_eye.xml')
 #webcam
-log.basicConfig(filename='webcam.log',level=log.INFO)
-
-#load image
-#img = cv.imread('sachin.jpg')
-#gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+#log.basicConfig(filename='webcam.log',level=log.INFO)
 
 video_capture = cv.VideoCapture(0)
 anterior = 0
