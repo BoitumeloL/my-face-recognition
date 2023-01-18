@@ -57,7 +57,7 @@ while True:
         break
 
     # Display the resulting frame
-    cv.imshow('Video', frame)
+    #cv.imshow('Video', frame)
 
 # When everything is done, release the capture
 video_capture.release()
