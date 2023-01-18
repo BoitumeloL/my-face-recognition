@@ -2,8 +2,10 @@ import dlib
 import numpy as np
 from numpy.linalg import norm
 import cv2 as cv
-
+from imutils import face_utils
 from time import sleep
+
+#load classifiers to detect a face
 
 # initialize the threshold for the blink detection and the number of blinks
 threshold = 0.2
@@ -55,9 +57,13 @@ while True:
     rects = detector(gray, 0)
 
     # loop over the face detections
-    for rect in rects:
+    for (i,rect) in enumerate(rects):
+
+        
         landmarks = predictor(gray, rect)
 
+        (x, y, w, h) = face_utils.rect_to_bb(rect)
+        cv.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 3)
         # Use the coordinates of each eye to compute the eye aspect ratio.
         left_aspect_ratio = aspect_ratio(landmarks, range(42, 48))
         right_aspect_ratio = aspect_ratio(landmarks, range(36, 42))
@@ -71,39 +77,30 @@ while True:
         elif ear >= threshold and eye_closed:
             blinks += 1
             eye_closed = False
+
+        # draw the landmarks on the frame
+        for n in range(36, 48):
+            x = landmarks.part(n).x
+            y = landmarks.part(n).y
+            cv.circle(frame, (x, y), 4, (255, 0, 0), -1)
+
         # draw the eye aspect ratio and the number of blinks on the frame
         cv.putText(frame, "Blinks: {}".format(blinks), (10, 30),
             cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
        
     cv.imshow("Frame", frame)
-    if cv.waitKey(1) == ord("q") and blinks == 4:
-        print("number of blinks: ", blinks)
+    if cv.waitKey(1) == ord("q"):
         break
+    #if cv.waitKey(1) == ord("q") and blinks == 4:
+    #if cv.waitKey(1) == ord("q") and blinks == 4:
+    #    cv.putText(frame, "This is the real user", (10, 30),
+    #        cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+        #cv.waitKey(120000)
+        
+        
 video_capture.release()
 cv.destroyAllWindows()
 
 
 
-    #faces = face_cascade.detectMultiScale(
-    #    gray,
-    #    scaleFactor=1.1,
-    #    minNeighbors=5,
-    #    minSize=(30, 30)
-    #)
-
-    # Draw a rectangle around the faces
-    #for (x, y, w, h) in faces:
-    #    cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    #    roi_gray = gray[y:y+h, x:x+w]
-    #    roi_color = frame[y:y+h, x:x+w]
-    #    eyes = eye_cascade.detectMultiScale(roi_gray)
-    #    for (ex,ey,ew,eh) in eyes:
-    #        cv.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(255,0,0),2)
-
-
-    #if anterior != len(faces):
-    #    anterior = len(faces)
-    #    log.info("faces: "+str(len(faces))+" at "+str(dt.datetime.now()))
-
-    
     
