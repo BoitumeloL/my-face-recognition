@@ -74,12 +74,7 @@ while True:
             num_blinks += 1
             closed_eyes = False
 
-        # draw the landmarks on the frame
-        for n in range(36, 48):
-            x = landmarks.part(n).x
-            y = landmarks.part(n).y
-            
-        # draw the eye aspect ratio and the number of blinks on the frame
+        # Write number of blinks on the frame
         cv.putText(frame, "Blinks: {}".format(num_blinks), (10, 30),
             cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
        
