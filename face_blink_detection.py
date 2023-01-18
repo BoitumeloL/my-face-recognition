@@ -60,15 +60,15 @@ while True:
         cv.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
         landmarks = predictor(gray, rect)
-        # Use the coordinates of each eye to compute the eye aspect ratio.
+        # Use the coordinates of each eye to compute the eye aspect ratio(ear).
         left_aspect_ratio = aspect_ratio(landmarks, range(42, 48))
         right_aspect_ratio = aspect_ratio(landmarks, range(36, 42))
         ear = (left_aspect_ratio + right_aspect_ratio) / 2.0
 
-        # if the eye aspect ratio is below the blink threshold, set the closed_eyes flag to True.
+        # if the eye aspect ratio(ear) is below the blink threshold, set the closed_eyes flag to True.
         if ear < threshold:
             closed_eyes = True
-        # if the eye aspect ratio is above the blink threshold and 
+        # if the eye aspect ratio (ear) is above the blink threshold and 
         # the closed_eyes flag is True, increment the number of blinks.
         elif ear >= threshold and closed_eyes:
             num_blinks += 1
